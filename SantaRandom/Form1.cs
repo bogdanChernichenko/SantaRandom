@@ -13,6 +13,9 @@ namespace SantaRandom
     public partial class Form1 : Form
     {
         int j = 0, i = 1;
+        object s;
+        List<Button> lstButton = new List<Button>();
+
         public Form1()
         {
             InitializeComponent();
@@ -26,6 +29,8 @@ namespace SantaRandom
         private void Button1_Click(object sender, EventArgs e)
         {
             Button b = (Button)sender;
+            
+
 
             //Текстовое поле учатника
             TextBox text = new TextBox
@@ -59,20 +64,24 @@ namespace SantaRandom
             Button randomButt = new Button
             {
                 Text = "Santa fucking randoooom",
-                Location = new Point(label.Location.X + 200, label2.Location.Y + 100)
+                AutoSize = true,
+                Location = new Point(label.Location.X + 300, label2.Location.Y + 40)
             };
+            lstButton.Add(randomButt);
 
-            if (randomButt != null)
+            if (lstButton.Count > 1)
             {
-                this.Controls.Remove(randomButt);
-                randomButt.Dispose();
+                this.Controls.Remove(lstButton[0]);
+                lstButton[0].Dispose();
+                lstButton.RemoveAt(0);
             }
+
 
             this.Controls.Add(text);
             this.Controls.Add(label);
             this.Controls.Add(label2);
             this.Controls.Add(text2);
-            this.Controls.Add(randomButt);
+            this.Controls.Add(lstButton[0]);
             j += 30;
             i++;
         }
