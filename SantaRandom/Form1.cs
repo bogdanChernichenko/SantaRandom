@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Net.Mail;
 using System.Net;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using System.Threading;
+using OpenQA.Selenium.Support.Extensions;
+using OpenQA.Selenium.Support.UI;
 
 namespace SantaRandom
 {
@@ -13,6 +16,7 @@ namespace SantaRandom
     {
         int j = 0, i = 1;
         object s;
+        IWebDriver browse;
         List<Button> lstButton = new List<Button>();
         List<TextBox> lstEmailsTextBoxes = new List<TextBox>();
         List<String> lstEmails = new List<String>();                //sorry :(
@@ -113,8 +117,41 @@ namespace SantaRandom
             //отправляем письма всем участникам
             for (int i = 0; i < lstEmails.Count; i++)
             {
-                SendMail("smtp.gmail.com", "email", "password", lstEmails[i], "Santa", "You New Year target is:" + lstPlayersList[lstRassilka[i]]);
+                SendMail("smtp.gmail.com", textBox1.Text, textBox2.Text, lstEmails[i], "Santa", "You New Year target is:" + lstPlayersList[lstRassilka[i]]);
+                MessageBox.Show("Почта для участника " + lstPlayersList[i] + " отправлена успешно!");
             }
+
+            //удаление почты аки ассосин
+            browse = new ChromeDriver();
+            WebDriverWait wait = new WebDriverWait(browse, TimeSpan.FromSeconds(8));
+            IJavaScriptExecutor js = (IJavaScriptExecutor)browse;
+            browse.Manage().Window.Maximize();
+            browse.Navigate().GoToUrl("https://accounts.google.com");
+            IWebElement login = browse.FindElement(By.Id("identifierId"));
+            IWebElement btnNext = browse.FindElement(By.Id("identifierNext"));
+
+            login.SendKeys(textBox1.Text);
+            btnNext.Click();
+
+            Thread.Sleep(1000);
+            IWebElement password = browse.FindElement(By.Name("password"));
+            btnNext = browse.FindElement(By.Id("passwordNext"));
+            password.SendKeys(textBox2.Text);
+            btnNext.Click();
+
+            browse.Navigate().GoToUrl("https://gmail.com");
+            browse.Navigate().GoToUrl("https://mail.google.com/mail/u/0/#trash");
+
+            IWebElement deleteAllLettersButton = browse.FindElement(By.XPath("//span[@class='x2']"));
+
+            deleteAllLettersButton.Click();
+
+
+            browse.TakeScreenshot().SaveAsFile("D:\\5.jpg", ScreenshotImageFormat.Jpeg);
+            //AutoItX.Send("{Enter}");
+            Thread.Sleep(4000);
+
+            browse.Quit();
         }
 
         //отправка ёбаной почты
@@ -138,7 +175,7 @@ namespace SantaRandom
                 };
                 client.Send(mail);
                 mail.Dispose();
-                MessageBox.Show("Почта отправлена успешно!");
+                
             }
             catch (Exception e)
             {
@@ -195,5 +232,7 @@ namespace SantaRandom
             //возвращаем список с индексами тех кому дарят
             return ResDigits;
         }
+
+
     }
 }
