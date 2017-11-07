@@ -9,6 +9,7 @@ using OpenQA.Selenium.Chrome;
 using System.Threading;
 using OpenQA.Selenium.Support.Extensions;
 using OpenQA.Selenium.Support.UI;
+using AutoIt;
 
 namespace SantaRandom
 {
@@ -112,12 +113,15 @@ namespace SantaRandom
                 lstEmails.Add(lstEmailsTextBoxes[i].Text);
             }
 
-            lstRassilka = Random();
-
+            while (lstRassilka.Count == 0)
+            {
+                lstRassilka = Random();
+            }
+            
             //отправляем письма всем участникам
             for (int i = 0; i < lstEmails.Count; i++)
             {
-                SendMail("smtp.gmail.com", textBox1.Text, textBox2.Text, lstEmails[i], "Santa", "You New Year target is:" + lstPlayersList[lstRassilka[i]]);
+                SendMail("smtp.gmail.com", textBox1.Text, textBox2.Text, lstEmails[i], "Santa", "You New Year target is: " + lstPlayersList[lstRassilka[i]]);
                 MessageBox.Show("Почта для участника " + lstPlayersList[i] + " отправлена успешно!");
             }
 
@@ -139,16 +143,16 @@ namespace SantaRandom
             password.SendKeys(textBox2.Text);
             btnNext.Click();
 
+            Thread.Sleep(2000);
             browse.Navigate().GoToUrl("https://gmail.com");
             browse.Navigate().GoToUrl("https://mail.google.com/mail/u/0/#trash");
 
+            Thread.Sleep(2000);
             IWebElement deleteAllLettersButton = browse.FindElement(By.XPath("//span[@class='x2']"));
 
             deleteAllLettersButton.Click();
 
-
-            browse.TakeScreenshot().SaveAsFile("D:\\5.jpg", ScreenshotImageFormat.Jpeg);
-            //AutoItX.Send("{Enter}");
+            AutoItX.Send("{Enter}");
             Thread.Sleep(4000);
 
             browse.Quit();
@@ -189,8 +193,7 @@ namespace SantaRandom
             List<String> names = new List<String>();
             List<int> Digits = new List<int>();
             List<int> ResDigits = new List<int>(); ;
-            Boolean b = true;
-
+            bool b = false;
             int res;
             Random rand = new Random();
 
@@ -204,12 +207,27 @@ namespace SantaRandom
             //рандомим
             for (int i = 0; i < names.Count; i++)
             {
-                while (true)
+                b = false;
+                while (!b)
                 {
+                    if (i == names.Count - 1)
+                    {
+                        if (names[i] == names[Digits[0]])
+                        {
+                            ResDigits.Clear();
+                            return ResDigits;
+                        }
+                        else
+                        {
+                            ResDigits.Add(names.IndexOf(names[Digits[0]]));
+                            Digits.Remove(names.IndexOf(names[Digits[0]]));
+                            return ResDigits;
+                        }
+                    }
                     res = rand.Next(0, Digits.Count);
                     while (true)
                     {
-                        if (ResDigits.IndexOf(res) != -1)   //Нельзя дарить подарок тому кому уже дарят
+                        if (ResDigits.IndexOf(res) != -1)           //Нельзя дарить подарок тому кому уже дарят
                         {
                             res = rand.Next(0, names.Count);
                         }
@@ -218,13 +236,98 @@ namespace SantaRandom
                             break;
                         }
                     }
-                    if (res != i)       //нельзя дарить подарок себе
+
+                    switch (names[i])
                     {
-                        Digits.Remove(res);
-                        b = false;
-                        Console.WriteLine(names[i] + " randomed " + names[res]);
-                        ResDigits.Add(res);
-                        break;
+                        case "Сашка":
+                            if (res != names.IndexOf("Полина") && res != i)
+                            {
+                                Digits.Remove(res);
+                                ResDigits.Add(res);
+                                b = true;
+                                break;
+                            }
+                            break;
+
+                        case "Полина":
+                            if (res != names.IndexOf("Сашка") && res != i)
+                            {
+                                Digits.Remove(res);
+                                ResDigits.Add(res);
+                                b = true;
+                                break;
+                            }
+                            break;
+
+                        case "Оля":
+                            if (res != names.IndexOf("Богдан") && res != i)
+                            {
+                                Digits.Remove(res);
+                                ResDigits.Add(res);
+                                b = true;
+                                break;
+                            }
+                            break;
+
+                        case "Богдан":
+                            if (res != names.IndexOf("Оля") && res != i)
+                            {
+                                Digits.Remove(res);
+                                ResDigits.Add(res);
+                                b = true;
+                                break;
+                            }
+                            break;
+
+                        case "Машка Басан":
+                            if (res != names.IndexOf("Разак") && res != i)
+                            {
+                                Digits.Remove(res);
+                                ResDigits.Add(res);
+                                b = true;
+                                break;
+                            }
+                            break;
+
+                        case "Разак":
+                            if (res != names.IndexOf("Машка Басан") && res != i)
+                            {
+                                Digits.Remove(res);
+                                ResDigits.Add(res);
+                                b = true;
+                                break;
+                            }
+                            break;
+
+                        case "Димон":
+                            if (res != names.IndexOf("Машка Вовченко") && res != i)
+                            {
+                                Digits.Remove(res);
+                                ResDigits.Add(res);
+                                b = true;
+                                break;
+                            }
+                            break;
+
+                        case "Машка Вовченко":
+                            if (res != names.IndexOf("Димон") && res != i)
+                            {
+                                Digits.Remove(res);
+                                ResDigits.Add(res);
+                                b = true;
+                                break;
+                            }
+                            break;
+
+                        default:
+                            if (res != i)
+                            {
+                                Digits.Remove(res);
+                                ResDigits.Add(res);
+                                b = true;
+                                break;
+                            }
+                            break;
                     }
                 }
             }
@@ -232,7 +335,5 @@ namespace SantaRandom
             //возвращаем список с индексами тех кому дарят
             return ResDigits;
         }
-
-
     }
 }
