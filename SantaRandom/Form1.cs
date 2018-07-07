@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Windows.Forms;
-using System.Net.Mail;
-using System.Net;
+﻿using AutoIt;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using System.Threading;
-using OpenQA.Selenium.Support.Extensions;
 using OpenQA.Selenium.Support.UI;
-using AutoIt;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Net;
+using System.Net.Mail;
+using System.Threading;
+using System.Windows.Forms;
 
 namespace SantaRandom
 {
