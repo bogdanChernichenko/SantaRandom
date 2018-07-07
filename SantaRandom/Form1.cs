@@ -38,13 +38,14 @@ namespace SantaRandom
         private void Button1_Click(object sender, EventArgs e)
         {
             Button b = (Button)sender;
-            
+
 
             //Текстовое поле учатника
             TextBox text = new TextBox
             {
                 Width = 200,
-                Location = new Point(b.Location.X + 60, b.Location.Y + 50 + j)
+                Location = new Point(flowLayoutPanel1.Location.X + 60, flowLayoutPanel1.Location.Y + 60 + 50 + j)
+                //Location = new Point(b.Location.X + 60, b.Location.Y + 50 + j)
             };
             lstPlayers.Add(text);
             //Участник№
@@ -87,12 +88,12 @@ namespace SantaRandom
                 lstButton.RemoveAt(0);
             }
 
-
-            this.Controls.Add(text);
-            this.Controls.Add(label);
-            this.Controls.Add(label2);
-            this.Controls.Add(text2);
-            this.Controls.Add(lstButton[0]);
+            
+            flowLayoutPanel1.Controls.Add(text);
+            flowLayoutPanel1.Controls.Add(label);
+            flowLayoutPanel1.Controls.Add(label2);
+            flowLayoutPanel1.Controls.Add(text2);
+            flowLayoutPanel1.Controls.Add(lstButton[0]);
             j += 30;
             i++;
         }
@@ -186,6 +187,11 @@ namespace SantaRandom
             {
                 throw new Exception("Mail.Send: " + e.Message);
             }
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
         }
 
         //RandomizeAlgorithm
