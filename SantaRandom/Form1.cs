@@ -124,7 +124,7 @@ namespace SantaRandom
                 MessageBox.Show("Почта для участника " + lstPlayersList[i] + " отправлена успешно!");
             }
 
-            //удаление почты аки ассосин
+            #region DraftMessageDeleteAutotest
             browse = new ChromeDriver();
             WebDriverWait wait = new WebDriverWait(browse, TimeSpan.FromSeconds(8));
             IJavaScriptExecutor js = (IJavaScriptExecutor)browse;
@@ -155,9 +155,11 @@ namespace SantaRandom
             Thread.Sleep(4000);
 
             browse.Quit();
+            #endregion
+
         }
 
-        //отправка ёбаной почты
+        //Email send
         public static void SendMail(string smtpServer, string from, string password,string mailto, string caption, string message)
         {
             try
@@ -186,7 +188,7 @@ namespace SantaRandom
             }
         }
 
-        //неебический алгоритм рандома
+        //RandomizeAlgorithm
         private List<int> Random ()
         {
             List<String> names = new List<String>();
