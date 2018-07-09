@@ -39,26 +39,25 @@ namespace SantaRandom
         {
             Button b = (Button)sender;
 
-
             //Текстовое поле учатника
             TextBox text = new TextBox
             {
                 Width = 200,
-                Location = new Point(flowLayoutPanel1.Location.X + 60, flowLayoutPanel1.Location.Y + 60 + 50 + j)
-                //Location = new Point(b.Location.X + 60, b.Location.Y + 50 + j)
+                Anchor = AnchorStyles.Left
             };
             lstPlayers.Add(text);
+
             //Участник№
             Label label = new Label
             {
-                Location = new Point(text.Location.X - 75, text.Location.Y),
-                Text = "Участник №" + i
+                Text = "Участник №" + i,
+                Dock = DockStyle.Fill,
+                Width = 90
             };
 
             //label email
             Label label2 = new Label
             {
-                Location = new Point(text.Location.X + 275, text.Location.Y),
                 Text = "E-mail" + i
             };
 
@@ -66,16 +65,14 @@ namespace SantaRandom
             TextBox text2 = new TextBox
             {
                 Width = 200,
-                Location = new Point(label2.Location.X + 100, label2.Location.Y)
             };
             lstEmailsTextBoxes.Add(text2);
 
             //Кнопка запуска рандома
             Button randomButt = new Button
             {
-                Text = "Santa fucking randoooom",
+                Text = "Santa randoooom",
                 AutoSize = true,
-                Location = new Point(label.Location.X + 300, label2.Location.Y + 40)
             };
             randomButt.Click += new EventHandler(RandomButtClick);
             lstButton.Add(randomButt);
@@ -87,20 +84,20 @@ namespace SantaRandom
                 lstButton[0].Dispose();
                 lstButton.RemoveAt(0);
             }
-
             
-            flowLayoutPanel1.Controls.Add(text);
-            flowLayoutPanel1.Controls.Add(label);
-            flowLayoutPanel1.Controls.Add(label2);
-            flowLayoutPanel1.Controls.Add(text2);
-            flowLayoutPanel1.Controls.Add(lstButton[0]);
-            j += 30;
+            flowLayoutPanel1.Controls.AddRange(new Control[] { label, text, label2, text2 }); //adding to layout control
+            flowLayoutPanel2.Controls.Add(lstButton[0]);
             i++;
         }
 
         //нажатие на кнопку рандома
         private void RandomButtClick(object sender, EventArgs e)
         {
+            if (lstPlayers.Count == 1)
+            {
+                MessageBox.Show("В игре не может участвовать только 1 участник!", "Danger");
+                return;
+            }
             //записываем имена участников в список
             for (int i = 0; i < lstPlayers.Count; i++)
             {
@@ -165,8 +162,10 @@ namespace SantaRandom
         {
             try
             {
-                MailMessage mail = new MailMessage();
-                mail.From = new MailAddress(from);
+                MailMessage mail = new MailMessage
+                {
+                    From = new MailAddress(from)
+                };
                 mail.To.Add(new MailAddress(mailto));
                 mail.Subject = caption;
                 mail.Body = message;
@@ -189,6 +188,7 @@ namespace SantaRandom
             }
         }
 
+        //закрытие формы
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             Application.Exit();
