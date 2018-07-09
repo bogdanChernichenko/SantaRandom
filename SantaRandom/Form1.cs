@@ -15,7 +15,6 @@ namespace SantaRandom
     public partial class Form1 : Form
     {
         int j = 0, i = 1;
-        object s;
         IWebDriver browse;
         List<Button> lstButton = new List<Button>();
         List<TextBox> lstEmailsTextBoxes = new List<TextBox>();
@@ -58,13 +57,16 @@ namespace SantaRandom
             //label email
             Label label2 = new Label
             {
-                Text = "E-mail" + i
+                Text = "E-mail" + i,
+                Dock = DockStyle.Fill,
+                Width = 60
             };
 
             //Текстовое поле для мыла
             TextBox text2 = new TextBox
             {
                 Width = 200,
+                Anchor = AnchorStyles.Left
             };
             lstEmailsTextBoxes.Add(text2);
 
@@ -85,8 +87,9 @@ namespace SantaRandom
                 lstButton.RemoveAt(0);
             }
             
-            flowLayoutPanel1.Controls.AddRange(new Control[] { label, text, label2, text2 }); //adding to layout control
-            flowLayoutPanel2.Controls.Add(lstButton[0]);
+            flowLayoutPanel1.Controls.AddRange(new Control[] { label, text }); //adding to layout control
+            flowLayoutPanel2.Controls.AddRange(new Control[] { label2, text2 }); //adding to layout control
+            flowLayoutPanel3.Controls.Add(lstButton[0]);
             i++;
         }
 
@@ -192,6 +195,16 @@ namespace SantaRandom
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             Application.Exit();
+        }
+
+        private void FlowLayoutPanel1_Scroll(object sender, ScrollEventArgs e)
+        {
+            FlowLayoutPanel2_Scroll(sender, e);
+        }
+
+        private void FlowLayoutPanel2_Scroll(object sender, ScrollEventArgs e)
+        {
+          flowLayoutPanel2.VerticalScroll.Value = flowLayoutPanel1.VerticalScroll.Value;
         }
 
         //RandomizeAlgorithm
