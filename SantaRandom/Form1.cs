@@ -197,11 +197,11 @@ namespace SantaRandom
             Application.Exit();
         }
 
+        //Синхронизация скроллбаров по первому
         private void FlowLayoutPanel1_Scroll(object sender, ScrollEventArgs e)
         {
             FlowLayoutPanel2_Scroll(sender, e);
         }
-
         private void FlowLayoutPanel2_Scroll(object sender, ScrollEventArgs e)
         {
           flowLayoutPanel2.VerticalScroll.Value = flowLayoutPanel1.VerticalScroll.Value;
