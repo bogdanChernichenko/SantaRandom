@@ -38,7 +38,7 @@ namespace SantaRandom
         {
             Button b = (Button)sender;
 
-            //Текстовое поле учатника
+            //Текстовое поле участника
             TextBox text = new TextBox
             {
                 Width = 200,
@@ -128,12 +128,12 @@ namespace SantaRandom
             #region DraftMessageDeleteAutotest
             browse = new ChromeDriver();
             WebDriverWait wait = new WebDriverWait(browse, TimeSpan.FromSeconds(8));
-            IJavaScriptExecutor js = (IJavaScriptExecutor)browse;
             browse.Manage().Window.Maximize();
             browse.Navigate().GoToUrl("https://accounts.google.com");
             IWebElement login = browse.FindElement(By.Id("identifierId"));
             IWebElement btnNext = browse.FindElement(By.Id("identifierNext"));
 
+            //Thread.Sleep(2000);
             login.SendKeys(textBox1.Text);
             btnNext.Click();
 
