@@ -37,6 +37,7 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.button2 = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -133,11 +134,22 @@
             this.flowLayoutPanel2.TabIndex = 9;
             this.flowLayoutPanel2.Scroll += new System.Windows.Forms.ScrollEventHandler(this.FlowLayoutPanel2_Scroll);
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(686, 203);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(194, 23);
+            this.button2.TabIndex = 10;
+            this.button2.Text = "Исключения для парочек";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.Button2_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(892, 473);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.flowLayoutPanel2);
             this.Controls.Add(this.flowLayoutPanel3);
             this.Controls.Add(this.tableLayoutPanel1);
@@ -164,6 +176,7 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel3;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
+        private System.Windows.Forms.Button button2;
     }
 }
 

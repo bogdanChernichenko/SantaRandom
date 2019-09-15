@@ -14,7 +14,7 @@ namespace SantaRandom
 {
     public partial class Form1 : Form
     {
-        int j = 0, i = 1;
+        int i = 1;
         IWebDriver browse;
         List<Button> lstButton = new List<Button>();
         List<TextBox> lstEmailsTextBoxes = new List<TextBox>();
@@ -86,7 +86,7 @@ namespace SantaRandom
                 lstButton[0].Dispose();
                 lstButton.RemoveAt(0);
             }
-            
+
             flowLayoutPanel1.Controls.AddRange(new Control[] { label, text }); //adding to layout control
             flowLayoutPanel2.Controls.AddRange(new Control[] { label2, text2 }); //adding to layout control
             flowLayoutPanel3.Controls.Add(lstButton[0]);
@@ -117,7 +117,7 @@ namespace SantaRandom
             {
                 lstRassilka = Random();
             }
-            
+
             //отправляем письма всем участникам
             for (int i = 0; i < lstEmails.Count; i++)
             {
@@ -161,7 +161,7 @@ namespace SantaRandom
         }
 
         //Email send
-        public static void SendMail(string smtpServer, string from, string password,string mailto, string caption, string message)
+        public static void SendMail(string smtpServer, string from, string password, string mailto, string caption, string message)
         {
             try
             {
@@ -183,7 +183,7 @@ namespace SantaRandom
                 };
                 client.Send(mail);
                 mail.Dispose();
-                
+
             }
             catch (Exception e)
             {
@@ -204,11 +204,18 @@ namespace SantaRandom
         }
         private void FlowLayoutPanel2_Scroll(object sender, ScrollEventArgs e)
         {
-          flowLayoutPanel2.VerticalScroll.Value = flowLayoutPanel1.VerticalScroll.Value;
+            flowLayoutPanel2.VerticalScroll.Value = flowLayoutPanel1.VerticalScroll.Value;
+        }
+
+        //кнопка исключений рандома для парочек
+        private void Button2_Click(object sender, EventArgs e)
+        {
+            ExceptionsDialog exceptionsDialog = new ExceptionsDialog();
+            exceptionsDialog.Show();
         }
 
         //RandomizeAlgorithm
-        private List<int> Random ()
+        private List<int> Random()
         {
             List<String> names = new List<String>();
             List<int> Digits = new List<int>();
@@ -257,103 +264,31 @@ namespace SantaRandom
                         }
                     }
 
-                    switch (names[i])
+                    if (res != i && !IsPair(names[i], names[res]))      //Последняя проверка, проверяем, чтобы цель не дарила своей парочке 
                     {
-                        case "Сашка":
-                            if (res != names.IndexOf("Полина") && res != i)
-                            {
-                                Digits.Remove(res);
-                                ResDigits.Add(res);
-                                b = true;
-                                break;
-                            }
-                            break;
-
-                        case "Полина":
-                            if (res != names.IndexOf("Сашка") && res != i)
-                            {
-                                Digits.Remove(res);
-                                ResDigits.Add(res);
-                                b = true;
-                                break;
-                            }
-                            break;
-
-                        case "Оля":
-                            if (res != names.IndexOf("Богдан") && res != i)
-                            {
-                                Digits.Remove(res);
-                                ResDigits.Add(res);
-                                b = true;
-                                break;
-                            }
-                            break;
-
-                        case "Богдан":
-                            if (res != names.IndexOf("Оля") && res != i)
-                            {
-                                Digits.Remove(res);
-                                ResDigits.Add(res);
-                                b = true;
-                                break;
-                            }
-                            break;
-
-                        case "Машка Басан":
-                            if (res != names.IndexOf("Разак") && res != i)
-                            {
-                                Digits.Remove(res);
-                                ResDigits.Add(res);
-                                b = true;
-                                break;
-                            }
-                            break;
-
-                        case "Разак":
-                            if (res != names.IndexOf("Машка Басан") && res != i)
-                            {
-                                Digits.Remove(res);
-                                ResDigits.Add(res);
-                                b = true;
-                                break;
-                            }
-                            break;
-
-                        case "Димон":
-                            if (res != names.IndexOf("Машка Вовченко") && res != i)
-                            {
-                                Digits.Remove(res);
-                                ResDigits.Add(res);
-                                b = true;
-                                break;
-                            }
-                            break;
-
-                        case "Машка Вовченко":
-                            if (res != names.IndexOf("Димон") && res != i)
-                            {
-                                Digits.Remove(res);
-                                ResDigits.Add(res);
-                                b = true;
-                                break;
-                            }
-                            break;
-
-                        default:
-                            if (res != i)
-                            {
-                                Digits.Remove(res);
-                                ResDigits.Add(res);
-                                b = true;
-                                break;
-                            }
-                            break;
+                        Digits.Remove(res);
+                        ResDigits.Add(res);
+                        b = true;
+                        break;
                     }
                 }
             }
 
             //возвращаем список с индексами тех кому дарят
             return ResDigits;
+        }
+
+        private bool IsPair(string firstName, string secondName)
+        {
+
+            bool res = false;
+
+            if (StaticDataStorage.PairsList.Find(x => x.Contains(firstName)) != null) //значит участник есть в списке парочек 
+            {
+                if (StaticDataStorage.PairsList.Exists(x => x.Contains(firstName + "," + secondName)) || StaticDataStorage.PairsList.Exists(x => x.Contains(secondName + "," + firstName))) res = true;
+            }
+
+            return res;
         }
     }
 }
