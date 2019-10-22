@@ -121,7 +121,7 @@ namespace SantaRandom
             //отправляем письма всем участникам
             for (int i = 0; i < lstEmails.Count; i++)
             {
-                SendMail("smtp.gmail.com", textBox1.Text, textBox2.Text, lstEmails[i], "Santa", "You New Year target is: " + lstPlayersList[lstRassilka[i]]);
+                SendMail("smtp.gmail.com", textBox1.Text, textBox2.Text, lstEmails[i], "Santa", "Your New Year target is: " + lstPlayersList[lstRassilka[i]]);
                 MessageBox.Show("Почта для участника " + lstPlayersList[i] + " отправлена успешно!");
             }
 
